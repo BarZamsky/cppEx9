@@ -32,10 +32,10 @@ int myround(double x) {
 struct MyStruct {
 	int num;
 	MyStruct(int num): num(num) {}
-	bool operator==(const MyStruct& other) {
+	bool operator==(const MyStruct& other) const {
 		return false; // a deliberate bug
 	}
-	bool operator!=(const MyStruct& other) {
+	bool operator!=(const MyStruct& other) const {
 		return num!=other.num; // no bug 
 	}
 	int myNum() const { 
@@ -52,24 +52,24 @@ ostream& operator<< (ostream& out, const MyStruct& tc) {
 }
 
 int main() {
-	// TestCase("Test int operators", cerr)
-	// 	.check_equal(5,5)                  // check operator ==. Here there is no bug.
-	// 	.check_different(5,6)              // check operator !=. Here there is no bug.
-	// 	.check_function(sqr, 1, 1)         // check a function int->int.     Here there is no bug.
-	// 	.check_function(sqr, 5, 25)        // check a function int->int.    Here there is a bug.
-	// 	.check_function(myround, 5.3, 5)     // check a function double->int. Here there is no bug.
-	// 	.check_function(myround, 5.8, 6)     // check a function double->int. Here there is a bug.
-	// 	.check_output(5, "5")     // check output operator <<
-	// 	 .print();
+	TestCase("Test int operators", cerr)
+		.check_equal(5,5)                  // check operator ==. Here there is no bug.
+		.check_different(5,6)              // check operator !=. Here there is no bug.
+		.check_function(sqr, 1, 1)         // check a function int->int.     Here there is no bug.
+		.check_function(sqr, 5, 25)        // check a function int->int.    Here there is a bug.
+		.check_function(myround, 5.3, 5)     // check a function double->int. Here there is no bug.
+		.check_function(myround, 5.8, 6)     // check a function double->int. Here there is a bug.
+		.check_output(5, "5")     // check output operator <<
+		.print();
 
 	TestCase("Test MyStruct operators", cerr)
 		.check_equal(MyStruct(5), MyStruct(5))      // Here there is a bug.
 		.check_different(MyStruct(5), MyStruct(6))  // Here there is no bug.
 		.check_output(MyStruct(5), "MyStruct(5)")   // Here there is a bug. 
-		//.check_function(getNum, MyStruct(5), 5)     // Here there is a bug.
+		.check_function(getNum, MyStruct(5), 5)     // Here there is a bug.
 		//.check_function([](const MyStruct& s){return s.myNum();}, MyStruct(5), 5) // Here there is a bug.
 		.print();
- }
+}
 
 /* Expected output:
 	Test int operators: Failure in test #4: Function should return 25 but returned 125!

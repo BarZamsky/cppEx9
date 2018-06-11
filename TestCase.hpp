@@ -38,7 +38,20 @@ class TestCase
 
     }
 
-     template <typename T1, typename T2>
+    template <typename T>
+    TestCase check_function(T (*f)(T),T num, T result)
+    {
+        T a=f(num);
+        if (a==result){ pass++;}
+        else
+        {
+            fail++;
+            stream<<_testName<<": Failure in test #"<< fail <<": Function should return "<<result<<" but returned "<<a<<"\n";
+        }
+        return *this;
+    }
+
+    template <typename T1, typename T2>
     TestCase check_function(T2 (*fncptr)(T1),T1 num, T2 result)
     {
         T1 a=fncptr(num);
@@ -50,6 +63,19 @@ class TestCase
         }
         return *this;
     }
+
+   template <typename T1,typename T2,typename T3>
+   TestCase check_function(T1 (*f)(const T2),T3 num, T1 result)
+   {
+       T1 a=f(num);
+        if (a==result){ pass++;}
+        else
+        {
+            fail++;
+            stream<<_testName<<": Failure in test #"<< fail <<": Function should return "<<result<<" but returned "<<a<<"\n";
+        }
+        return *this;
+   }
 
     template <typename T>
     TestCase check_output(T a, string str )
@@ -66,11 +92,7 @@ class TestCase
 
     void print()
     {
-        stream<< _testName<<": "<< fail<<" failed, "<<pass<<" passed, "<<fail+pass<<" total";
-        ostringstream os;
-        os<<stream.rdbuf();
-        cout << os.str();
-
+        stream<< _testName<<": "<< fail<<" failed, "<<pass<<" passed, "<<fail+pass<<" total\n";
     }
    
 };
