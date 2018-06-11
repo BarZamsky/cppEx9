@@ -38,41 +38,14 @@ class TestCase
 
     }
 
-    template <typename T>
-    TestCase check_function(T (*f)(T),T num, T result)
-    {
-        T a=f(num);
-        if (a==result){ pass++;}
-        else
-        {
-            fail++;
-            stream<<_testName<<": Failure in test #"<< fail <<": Function should return "<<result<<" but returned "<<a<<"\n";
-        }
-        return *this;
-    }
-
-    template <typename T1, typename T2>
-    TestCase check_function(T2 (*fncptr)(T1),T1 num, T2 result)
-    {
-        T1 a=fncptr(num);
-        if (a==result){ pass++;}
-        else
-        {
-            fail++;
-            stream<<_testName<<": Failure in test #"<< fail <<": Function should return "<<result<<" but returned "<<a<<"\n";
-        }
-        return *this;
-    }
-
    template <typename T1,typename T2,typename T3>
-   TestCase check_function(T1 (*f)(const T2),T3 num, T1 result)
+   TestCase check_function(T1 (f) ,T2 num, T3 result)
    {
-       T1 a=f(num);
-        if (a==result){ pass++;}
+        if (f(num)==result){ pass++;}
         else
         {
             fail++;
-            stream<<_testName<<": Failure in test #"<< fail <<": Function should return "<<result<<" but returned "<<a<<"\n";
+            stream<<_testName<<": Failure in test #"<< fail <<": Function should return "<<result<<" but returned "<<f(num)<<"\n";
         }
         return *this;
    }
@@ -93,6 +66,7 @@ class TestCase
     void print()
     {
         stream<< _testName<<": "<< fail<<" failed, "<<pass<<" passed, "<<fail+pass<<" total\n";
+        stream<<"------\n";
     }
    
 };
